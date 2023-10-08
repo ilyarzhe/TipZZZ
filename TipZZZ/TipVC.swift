@@ -113,6 +113,13 @@ class TipVC: UIViewController, UITextFieldDelegate {
     }
     
     // Methods
+//    func textFieldDidEndEditing(_ textField: UITextField) {
+//        let amountIfZero = (Int(textField.text?.replacingOccurrences(of: ",", with: "") ?? "0") ?? 0)
+//        if amountIfZero == 0 {
+//            calculateTip(amountIfZero, amountIfZero)
+//        }
+            
+//    }
     
     func textField(
         _ textField: UITextField,
@@ -131,7 +138,7 @@ class TipVC: UIViewController, UITextFieldDelegate {
     }
     
     @objc func textFieldDidChange(_ textField: UITextField) {
-        let currentText = (textField.text?.replacingOccurrences(of: ",", with: "") ?? "")
+        let currentText = (textField.text?.replacingOccurrences(of: ",", with: "") ?? "0")
         if let value = Int(currentText) {
             let formattedNumber = NumberFormatters.formatter.string(
                 from: NSNumber(value: value)
@@ -154,13 +161,17 @@ class TipVC: UIViewController, UITextFieldDelegate {
     
     func calculateTip (_ number: Int, _ percent: Int ) {
         let tip = number * percent / 100
-        let principal = (billAmountTF.text?.replacingOccurrences(of: ",", with: "") ?? "")
+        let principal = (billAmountTF.text?.replacingOccurrences(of: ",", with: "") ?? "0")
         tipNumAmountLabel.text = "Tip: \(NumberFormatters.formatter.string(from: NSNumber(value:tip)) ?? "NA")"
         if let value = Int(principal) {
-            totalWithTipLabel.text = "Total with Tip: \(NumberFormatters.formatter.string(from: NSNumber(value: value + tip)) ?? "NA")"
+            totalWithTipLabel.text = "Total with Tip: \(NumberFormatters.formatter.string(from: NSNumber(value: value + tip)) ?? "0")"
+        } else {
+            totalWithTipLabel.text = "Total with Tip: 0"
         }
     }
-    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+            view.endEditing(true)
+        }
         
 
     
